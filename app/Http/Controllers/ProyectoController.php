@@ -12,15 +12,9 @@ class ProyectoController extends Controller
      */
     public function index()
     {
-        //
-    }
+        $proyectos = Proyecto::latest()->get();
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return view('proyectos.index', compact('proyectos'));
     }
 
     /**
@@ -28,7 +22,19 @@ class ProyectoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'titulo' => 'required|string|max:255',
+            'descripcion' => 'nullable|string',
+        ]);
+
+        Proyecto::create([
+            'titulo' => $request->titulo,
+            'descripcion' => $request->descripcion,
+            'estado' => 'Pendiente',
+            'user_id' => auth()->id(),
+        ]);
+
+        return redirect()->route('proyectos.index');
     }
 
     /**
@@ -36,15 +42,10 @@ class ProyectoController extends Controller
      */
     public function show(Proyecto $proyecto)
     {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Proyecto $proyecto)
-    {
-        //
+        $proyecto->load('tareas.subtareas');
+
+        return view('proyectos.show', compact('proyecto'));
     }
 
     /**
@@ -52,7 +53,17 @@ class ProyectoController extends Controller
      */
     public function update(Request $request, Proyecto $proyecto)
     {
-        //
+        $this->authorizeProyecto($proyecto);
+
+        $request->validate([
+            'titulo' => 'required|string|max:255',
+            'descripcion' => 'nullable|string',
+            'estado' => 'required|in:Pendiente,Completado',
+        ]);
+
+        $proyecto->update($request->only('titulo', 'descripcion', 'estado'));
+
+        return redirect()->route('proyectos.show', $proyecto);
     }
 
     /**
@@ -60,6 +71,18 @@ class ProyectoController extends Controller
      */
     public function destroy(Proyecto $proyecto)
     {
-        //
+        $this->authorizeProyecto($proyecto);
+
+        $proyecto->delete();
+
+        return redirect()->route('proyectos.index');
+    }
+
+    //Se pone en las funciones para validar si el usuario que hara esa accion tiene el permiso para hacerlo
+    private function authorizeProyecto(Proyecto $proyecto)
+    {
+        if ($proyecto->user_id !== auth()->id()) {
+            abort(403);
+        }
     }
 }
