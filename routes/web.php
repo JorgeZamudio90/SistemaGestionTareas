@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProyectoController;
+use App\Http\Controllers\SubtareaController;
 use App\Http\Controllers\TareaController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,6 +22,9 @@ Route::middleware('auth')->group(function () {
         ->only(['index', 'store', 'show', 'update', 'destroy']);
 
     Route::resource('proyectos.tareas', TareaController::class)
+        ->only(['index', 'store', 'show', 'update', 'destroy']);
+
+    Route::resource('tareas.subtareas', SubtareaController::class)
         ->only(['index', 'store', 'show', 'update', 'destroy']);
 });
 

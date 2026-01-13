@@ -67,6 +67,13 @@
                                             Ver
                                         </a>
 
+                                        <a
+                                            href="{{ route('tareas.subtareas.index', $tarea) }}"
+                                            class="text-indigo-600 hover:underline"
+                                        >
+                                            Subtareas
+                                        </a>
+
                                         <form
                                             method="POST"
                                             action="{{ route('proyectos.tareas.destroy', [$proyecto, $tarea]) }}"
