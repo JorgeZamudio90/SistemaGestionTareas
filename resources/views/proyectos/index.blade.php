@@ -16,10 +16,11 @@
                     @csrf
 
                     <div class="mb-4">
+                        <label class="block mb-1">Título</label>
                         <input
                             type="text"
                             name="titulo"
-                            placeholder="Título"
+                            placeholder="Título del proyecto"
                             value="{{ old('titulo') }}"
                             class="w-full border-gray-300 rounded-md shadow-sm"
                             required
@@ -30,9 +31,10 @@
                     </div>
 
                     <div class="mb-4">
+                        <label class="block mb-1">Descripción</label>
                         <textarea
                             name="descripcion"
-                            placeholder="Descripción"
+                            placeholder="Descripción del proyecto"
                             class="w-full border-gray-300 rounded-md shadow-sm"
                         >{{ old('descripcion') }}</textarea>
                     </div>
@@ -65,34 +67,30 @@
                         <tbody>
                             @foreach($proyectos as $proyecto)
                                 <tr>
-                                    <td class="px-4 py-2 border">
-                                        {{ $proyecto->titulo }}
+                                    <td class="px-4 py-2 border align-top">{{ $proyecto->titulo }}</td>
+                                    <td class="px-4 py-2 border align-top">{{ $proyecto->descripcion ?? '—' }}</td>
+                                    <td class="px-4 py-2 border align-top">
+                                        <span class="inline-block px-2 py-1 rounded text-sm
+                                            {{ $proyecto->estado === 'Completado' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
+                                            {{ $proyecto->estado }}
+                                        </span>
                                     </td>
-                                    <td class="px-4 py-2 border">
-                                        {{ $proyecto->descripcion ?? '—' }}
-                                    </td>
-                                    <td class="px-4 py-2 border">
-                                        {{ $proyecto->estado }}
-                                    </td>
-                                    <td class="px-4 py-2 border">
-                                        <a
-                                            href="{{ route('proyectos.show', $proyecto) }}"
-                                            class="text-blue-600 hover:underline"
-                                        >
-                                            Ver
+                                    <td class="px-4 py-2 border align-top">
+                                        <a href="{{ route('proyectos.show', $proyecto) }}"
+                                           class="text-blue-600 hover:underline">
+                                           Ver / Editar
                                         </a>
 
-                                        <form
-                                            method="POST"
-                                            action="{{ route('proyectos.destroy', $proyecto) }}"
-                                            class="inline"
-                                            onsubmit="return confirm('¿Eliminar proyecto?')"
-                                        >
+                                        <a href="{{ route('proyectos.tareas.index', $proyecto) }}"
+                                           class="text-indigo-600 hover:underline ml-3">
+                                           Tareas
+                                        </a>
+
+                                        <form method="POST" action="{{ route('proyectos.destroy', $proyecto) }}"
+                                              class="inline ml-3" onsubmit="return confirm('¿Eliminar proyecto?')">
                                             @csrf
                                             @method('DELETE')
-                                            <button class="text-red-600 hover:underline ml-2">
-                                                Eliminar
-                                            </button>
+                                            <button class="text-red-600 hover:underline">Eliminar</button>
                                         </form>
                                     </td>
                                 </tr>
