@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TareaRequest;
 use App\Models\Proyecto;
 use App\Models\Tarea;
 use Illuminate\Http\Request;
@@ -21,12 +22,9 @@ class TareaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, Proyecto $proyecto)
+    public function store(TareaRequest $request, Proyecto $proyecto)
     {
-        $request->validate([
-            'titulo' => 'required|string|max:255',
-            'descripcion' => 'nullable|string',
-        ]);
+        $request->validated();
 
         $proyecto->tareas()->create([
             'titulo' => $request->titulo,
@@ -50,13 +48,9 @@ class TareaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Proyecto $proyecto, Tarea $tarea)
+    public function update(TareaRequest $request, Proyecto $proyecto, Tarea $tarea)
     {
-        $request->validate([
-            'titulo' => 'required|string|max:255',
-            'descripcion' => 'nullable|string',
-            'estado' => 'required|in:Pendiente,Completado',
-        ]);
+        $request->validated();
 
         $tarea->update($request->only('titulo', 'descripcion', 'estado'));
 

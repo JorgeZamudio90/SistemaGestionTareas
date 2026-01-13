@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProyectoRequest;
 use App\Models\Proyecto;
 use Illuminate\Http\Request;
 
@@ -20,12 +21,9 @@ class ProyectoController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ProyectoRequest $request)
     {
-        $request->validate([
-            'titulo' => 'required|string|max:255',
-            'descripcion' => 'nullable|string',
-        ]);
+        $request->validated();
 
         Proyecto::create([
             'titulo' => $request->titulo,
@@ -51,8 +49,8 @@ class ProyectoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Proyecto $proyecto)
-    {   //Hay que poner esta validacion en tareas, subtareas y comentarios, en editar y eliminar
+    public function update(ProyectoRequest $request, Proyecto $proyecto)
+    {
         if ($proyecto->user_id != auth()->id()) {
             return redirect()
                 ->route('proyectos.index')
@@ -60,15 +58,11 @@ class ProyectoController extends Controller
                 ->send();
         }
 
-        $request->validate([
-            'titulo' => 'required|string|max:255',
-            'descripcion' => 'nullable|string',
-            'estado' => 'required|in:Pendiente,Completado',
-        ]);
+        $request->validated();
 
         $proyecto->update($request->only('titulo', 'descripcion', 'estado'));
 
-        return redirect()->route('proyectos.show', $proyecto);
+        return redirect()->route('proyectos.index');
     }
 
     /**

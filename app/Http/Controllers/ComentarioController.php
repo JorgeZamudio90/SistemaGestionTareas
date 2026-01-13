@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ComentarioRequest;
 use App\Models\Comentario;
 use App\Models\Proyecto;
 use App\Models\Subtarea;
@@ -21,11 +22,9 @@ class ComentarioController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, $tipo, $id)
+    public function store(ComentarioRequest $request, $tipo, $id)
     {
-        $request->validate([
-            'contenido' => 'required|string',
-        ]);
+        $request->validated();
 
         // Determinar el modelo según $tipo
         $modelo = match($tipo) {
@@ -53,12 +52,10 @@ class ComentarioController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Comentario $comentario)
+    public function update(ComentarioRequest $request, Comentario $comentario)
     {
         // Validación
-        $request->validate([
-            'contenido' => 'required|string|max:1000',
-        ]);
+        $request->validated();
 
         // Solo el usuario que creó el comentario puede actualizarlo
         if ($comentario->user_id != auth()->id()) {

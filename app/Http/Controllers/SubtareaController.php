@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SubtareaRequest;
 use App\Models\Subtarea;
 use App\Models\Tarea;
 use Illuminate\Http\Request;
@@ -21,12 +22,9 @@ class SubtareaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, Tarea $tarea)
+    public function store(SubtareaRequest $request, Tarea $tarea)
     {
-        $request->validate([
-            'titulo' => 'required|string|max:255',
-            'descripcion' => 'nullable|string',
-        ]);
+        $request->validated();
 
         $tarea->subtareas()->create($request->all());
 
@@ -46,13 +44,9 @@ class SubtareaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Tarea $tarea, Subtarea $subtarea)
+    public function update(SubtareaRequest $request, Tarea $tarea, Subtarea $subtarea)
     {
-        $request->validate([
-            'titulo' => 'required|string|max:255',
-            'descripcion' => 'nullable|string',
-            'estado' => 'required',
-        ]);
+        $request->validated();
 
         $subtarea->update($request->all());
 
