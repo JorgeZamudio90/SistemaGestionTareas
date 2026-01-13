@@ -62,7 +62,7 @@ class ComentarioController extends Controller
 
         // Solo el usuario que creó el comentario puede actualizarlo
         if ($comentario->user_id != auth()->id()) {
-            abort(403, 'No tienes permiso para editar este comentario.');
+            return redirect()->back()->with('error', 'No tienes permiso para editar este comentario.');
         }
 
         $comentario->update([
@@ -77,7 +77,10 @@ class ComentarioController extends Controller
      */
     public function destroy(Comentario $comentario)
     {
+        if ($comentario->user_id != auth()->id()) {
+            return redirect()->back()->with('error', 'No tienes permiso para eliminar este comentario.');
+        }
         $comentario->delete();
-        return back();
+        return back()->with('success', 'Comentario eliminado correctamente.');
     }
 }
