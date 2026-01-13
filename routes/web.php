@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProyectoController;
+use App\Http\Controllers\TareaController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -12,12 +13,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/proyectos', [ProyectoController::class, 'index'])->name('proyectos.index');
-    Route::post('/proyectos', [ProyectoController::class, 'store'])->name('proyectos.store');
-    Route::get('/proyectos/{proyecto}', [ProyectoController::class, 'show'])->name('proyectos.show');
-    Route::put('/proyectos/{proyecto}', [ProyectoController::class, 'update'])->name('proyectos.update');
-    Route::delete('/proyectos/{proyecto}', [ProyectoController::class, 'destroy'])->name('proyectos.destroy');
+    Route::resource('proyectos', ProyectoController::class)
+        ->only(['index', 'store', 'show', 'update', 'destroy']);
+
+    Route::resource('proyectos.tareas', TareaController::class)
+        ->only(['index', 'store', 'show', 'update', 'destroy']);
 });
 
 require __DIR__.'/auth.php';

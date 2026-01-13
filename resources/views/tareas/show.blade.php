@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Proyecto: {{ $proyecto->titulo }}
+            Tarea: {{ $tarea->titulo }}
         </h2>
     </x-slot>
 
@@ -10,30 +10,17 @@
 
             {{-- Información --}}
             <div class="bg-white p-6 shadow sm:rounded-lg">
-                <p><strong>Descripción:</strong></p>
-                <p class="text-gray-700 mb-2">
-                    {{ $proyecto->descripcion ?? 'Sin descripción' }}
-                </p>
+                <p><strong>Proyecto:</strong> {{ $proyecto->titulo }}</p>
                 <p><strong>Estado:</strong> {{ $proyecto->estado }}</p>
             </div>
 
-            {{-- Acceso a Tareas --}}
+            {{-- Actualizar --}}
             <div class="bg-white p-6 shadow sm:rounded-lg">
-                <a
-                    href="{{ route('proyectos.tareas.index', $proyecto) }}"
-                    class="inline-block bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-                >
-                    Ver Tareas del Proyecto
-                </a>
-            </div>
-
-            {{-- Actualizar Proyecto --}}
-            <div class="bg-white p-6 shadow sm:rounded-lg">
-                <h3 class="text-lg font-semibold mb-4">Actualizar Proyecto</h3>
+                <h3 class="text-lg font-semibold mb-4">Actualizar Tarea</h3>
 
                 <form
                     method="POST"
-                    action="{{ route('proyectos.update', $proyecto) }}"
+                    action="{{ route('proyectos.tareas.update', [$proyecto, $tarea]) }}"
                 >
                     @csrf
                     @method('PUT')
@@ -43,7 +30,7 @@
                         <input
                             type="text"
                             name="titulo"
-                            value="{{ old('titulo', $proyecto->titulo) }}"
+                            value="{{ old('titulo', $tarea->titulo) }}"
                             class="w-full border-gray-300 rounded-md"
                             required
                         >
@@ -54,7 +41,7 @@
                         <textarea
                             name="descripcion"
                             class="w-full border-gray-300 rounded-md"
-                        >{{ old('descripcion', $proyecto->descripcion) }}</textarea>
+                        >{{ old('descripcion', $tarea->descripcion) }}</textarea>
                     </div>
 
                     <div class="mb-4">
@@ -63,40 +50,36 @@
                             name="estado"
                             class="w-full border-gray-300 rounded-md"
                         >
-                            <option value="Pendiente" @selected($proyecto->estado === 'Pendiente')>
+                            <option value="Pendiente" @selected($tarea->estado === 'Pendiente')>
                                 Pendiente
                             </option>
-                            <option value="Completado" @selected($proyecto->estado === 'Completado')>
+                            <option value="Completado" @selected($tarea->estado === 'Completado')>
                                 Completado
                             </option>
                         </select>
                     </div>
 
-                    <button
-                        class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-                    >
-                        Actualizar
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded">
+                        Guardar Cambios
                     </button>
                 </form>
             </div>
 
-            {{-- Eliminar Proyecto --}}
+            {{-- Eliminar --}}
             <div class="bg-white p-6 shadow sm:rounded-lg">
                 <h3 class="text-lg font-semibold mb-4 text-red-600">
-                    Eliminar Proyecto
+                    Eliminar Tarea
                 </h3>
 
                 <form
                     method="POST"
-                    action="{{ route('proyectos.destroy', $proyecto) }}"
-                    onsubmit="return confirm('¿Seguro que deseas eliminar este proyecto?')"
+                    action="{{ route('proyectos.tareas.destroy', [$proyecto, $tarea]) }}"
+                    onsubmit="return confirm('¿Seguro que deseas eliminar esta tarea?')"
                 >
                     @csrf
                     @method('DELETE')
 
-                    <button
-                        class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
-                    >
+                    <button class="bg-red-600 text-white px-4 py-2 rounded">
                         Eliminar
                     </button>
                 </form>

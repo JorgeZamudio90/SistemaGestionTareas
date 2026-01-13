@@ -81,7 +81,7 @@ class ProyectoController extends Controller
     //Se pone en las funciones para validar si el usuario que hara esa accion tiene el permiso para hacerlo
     private function authorizeProyecto(Proyecto $proyecto)
     {
-        if ($proyecto->user_id !== auth()->id()) {
+        if ($proyecto->user_id != auth()->id()) {
             abort(403);
         }
     }
