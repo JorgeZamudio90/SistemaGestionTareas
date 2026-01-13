@@ -52,8 +52,13 @@ class ProyectoController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, Proyecto $proyecto)
-    {
-        $this->authorizeProyecto($proyecto);
+    {   //Hay que poner esta validacion en tareas, subtareas y comentarios, en editar y eliminar
+        if ($proyecto->user_id != auth()->id()) {
+            return redirect()
+                ->route('proyectos.index')
+                ->with('error', 'No tienes permiso para eliminar este proyecto.')
+                ->send();
+        }
 
         $request->validate([
             'titulo' => 'required|string|max:255',
@@ -71,18 +76,15 @@ class ProyectoController extends Controller
      */
     public function destroy(Proyecto $proyecto)
     {
-        $this->authorizeProyecto($proyecto);
+        if ($proyecto->user_id != auth()->id()) {
+            return redirect()
+                ->route('proyectos.index')
+                ->with('error', 'No tienes permiso para eliminar este proyecto.')
+                ->send();
+        }
 
         $proyecto->delete();
 
         return redirect()->route('proyectos.index');
-    }
-
-    //Se pone en las funciones para validar si el usuario que hara esa accion tiene el permiso para hacerlo
-    private function authorizeProyecto(Proyecto $proyecto)
-    {
-        if ($proyecto->user_id != auth()->id()) {
-            abort(403);
-        }
     }
 }

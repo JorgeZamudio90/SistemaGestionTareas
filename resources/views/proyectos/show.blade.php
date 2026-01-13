@@ -17,15 +17,17 @@
                 <p><strong>Estado:</strong> {{ $proyecto->estado }}</p>
             </div>
 
-            {{-- Acceso a Tareas --}}
-            <div class="bg-white p-6 shadow sm:rounded-lg">
-                <a
-                    href="{{ route('proyectos.tareas.index', $proyecto) }}"
-                    class="inline-block bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-                >
-                    Ver Tareas del Proyecto
-                </a>
-            </div>
+            @if (session('success'))
+                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @if (session('error'))
+                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                    {{ session('error') }}
+                </div>
+            @endif
 
             {{-- Comentarios --}}
             <div class="bg-white p-6 shadow sm:rounded-lg">
@@ -171,29 +173,6 @@
                     </button>
                 </form>
             </div>
-
-            {{-- Eliminar Proyecto --}}
-            <div class="bg-white p-6 shadow sm:rounded-lg">
-                <h3 class="text-lg font-semibold mb-4 text-red-600">
-                    Eliminar Proyecto
-                </h3>
-
-                <form
-                    method="POST"
-                    action="{{ route('proyectos.destroy', $proyecto) }}"
-                    onsubmit="return confirm('¿Seguro que deseas eliminar este proyecto?')"
-                >
-                    @csrf
-                    @method('DELETE')
-
-                    <button
-                        class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
-                    >
-                        Eliminar
-                    </button>
-                </form>
-            </div>
-
         </div>
     </div>
 </x-app-layout>
