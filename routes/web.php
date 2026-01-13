@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ComentarioController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProyectoController;
 use App\Http\Controllers\SubtareaController;
@@ -26,6 +27,18 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('tareas.subtareas', SubtareaController::class)
         ->only(['index', 'store', 'show', 'update', 'destroy']);
+
+    Route::post('/{tipo}/{id}/comentarios', [ComentarioController::class, 'store'])
+    ->name('comentarios.store')
+    ->middleware('auth');
+
+    Route::put('/comentarios/{comentario}', [ComentarioController::class, 'update'])
+    ->name('comentarios.update')
+    ->middleware('auth');
+
+    Route::delete('/comentarios/{comentario}', [ComentarioController::class, 'destroy'])
+        ->name('comentarios.destroy')
+        ->middleware('auth');
 });
 
 require __DIR__.'/auth.php';

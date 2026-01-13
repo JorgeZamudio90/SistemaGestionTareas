@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comentario;
+use App\Models\Proyecto;
+use App\Models\Subtarea;
+use App\Models\Tarea;
 use Illuminate\Http\Request;
 
 class ComentarioController extends Controller
@@ -16,19 +19,27 @@ class ComentarioController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, $tipo, $id)
     {
-        //
+        $request->validate([
+            'contenido' => 'required|string',
+        ]);
+
+        // Determinar el modelo según $tipo
+        $modelo = match($tipo) {
+            'proyecto' => Proyecto::findOrFail($id),
+            'tarea' => Tarea::findOrFail($id),
+            'subtarea' => Subtarea::findOrFail($id),
+        };
+
+        $modelo->comentarios()->create([
+            'contenido' => $request->contenido,
+            'user_id' => auth()->id(),
+        ]);
+
+        return back();
     }
 
     /**
@@ -40,19 +51,25 @@ class ComentarioController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Comentario $comentario)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, Comentario $comentario)
     {
-        //
+        // Validación
+        $request->validate([
+            'contenido' => 'required|string|max:1000',
+        ]);
+
+        // Solo el usuario que creó el comentario puede actualizarlo
+        if ($comentario->user_id != auth()->id()) {
+            abort(403, 'No tienes permiso para editar este comentario.');
+        }
+
+        $comentario->update([
+            'contenido' => $request->contenido,
+        ]);
+
+        return back()->with('success', 'Comentario actualizado correctamente.');
     }
 
     /**
@@ -60,6 +77,7 @@ class ComentarioController extends Controller
      */
     public function destroy(Comentario $comentario)
     {
-        //
+        $comentario->delete();
+        return back();
     }
 }
