@@ -7,6 +7,13 @@
 
     <div class="py-12">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8 space-y-6">
+            {{-- Botón regresar al index de proyectos --}}
+            <div>
+                <a href="{{ route('proyectos.index') }}"
+                   class="inline-block bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300">
+                   Volver a Proyectos
+                </a>
+            </div>
 
             {{-- Información --}}
             <div class="bg-white p-6 shadow sm:rounded-lg">

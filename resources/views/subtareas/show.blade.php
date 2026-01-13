@@ -8,6 +8,14 @@
     <div class="py-12">
         <div class="max-w-3xl mx-auto sm:px-6 lg:px-8 space-y-6">
 
+            {{-- Botón regresar al index de subtareas --}}
+            <div>
+                <a href="{{ route('tareas.subtareas.index', $subtarea->tarea) }}"
+                   class="inline-block bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300">
+                   Volver a Subtareas
+                </a>
+            </div>
+
             {{-- Info: Tarea / Proyecto --}}
             <div class="bg-white p-6 shadow sm:rounded-lg">
                 <p class="text-sm text-gray-500 mb-2">
@@ -181,11 +189,6 @@
                         <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
                             Guardar cambios
                         </button>
-
-                        <a href="{{ route('proyectos.tareas.index', [$subtarea->tarea->proyecto, $subtarea->tarea]) }}"
-                           class="inline-block bg-gray-200 px-3 py-2 rounded hover:bg-gray-300">
-                            Volver a la tarea
-                        </a>
                     </div>
                 </form>
             </div>

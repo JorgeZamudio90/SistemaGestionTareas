@@ -7,6 +7,10 @@
 
     <div class="py-12">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8 space-y-6">
+            <a href="{{ route('proyectos.tareas.index', [$tarea->proyecto, $tarea]) }}"
+                class="inline-block ml-3 bg-gray-200 px-3 py-2 rounded hover:bg-gray-300">
+                Volver a Tarea
+            </a>
 
             {{-- Formulario Crear Subtarea --}}
             <div class="bg-white p-6 shadow sm:rounded-lg">
@@ -45,11 +49,6 @@
                     >
                         Agregar Subtarea
                     </button>
-
-                    <a href="{{ route('proyectos.tareas.index', [$tarea->proyecto, $tarea]) }}"
-                        class="inline-block ml-3 bg-gray-200 px-3 py-2 rounded hover:bg-gray-300">
-                        Volver a Tarea
-                    </a>
                 </form>
             </div>
 

@@ -56,7 +56,7 @@ class ProyectoController extends Controller
         if ($proyecto->user_id != auth()->id()) {
             return redirect()
                 ->route('proyectos.index')
-                ->with('error', 'No tienes permiso para eliminar este proyecto.')
+                ->with('error', 'No tienes permiso para editar este proyecto.')
                 ->send();
         }
 

@@ -7,6 +7,12 @@
 
     <div class="py-12">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8 space-y-6">
+            <div>
+                <a href="{{ route('proyectos.tareas.index', $proyecto) }}"
+                   class="inline-block bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300">
+                   Volver a Tareas
+                </a>
+            </div>
 
             {{-- Información --}}
             <div class="bg-white p-6 shadow sm:rounded-lg">
